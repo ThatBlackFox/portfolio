@@ -2,18 +2,443 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Project Name</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rebar Counting App</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
+      :root {
+        --bg-color: #f8fafc;
+        --text-color: #1e293b;
+        --primary-color: #1e40af;
+        --accent-color: #3b82f6;
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        padding: 2rem;
+        box-sizing: border-box;
+      }
+
+      /* --- Navigation Bar --- */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        padding: 1.5rem 2rem;
+        background-color: var(--card-bg);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+      }
+
+      .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .navbar-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .navbar-links a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease-in-out;
+      }
+
+      .navbar-links a:hover {
+        color: var(--primary-color);
+      }
+
+      .navbar-links .github-icon {
+        font-size: 1.5rem;
+        color: var(--text-color);
+      }
+
+      /* --- Hero Section --- */
+      .hero-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .hero-content {
+        flex: 1;
+        padding-right: 2rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+        line-height: 1.1;
+      }
+
+      .hero-content p {
+        font-size: 1.125rem;
+        color: #475569;
+      }
+
+      .hashtag-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+
+      .hashtag-tab {
+        background-color: var(--border-color);
+        color: var(--text-color);
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
+
+      .hashtag-tab:hover {
+        background-color: var(--primary-color);
+        color: var(--card-bg);
+      }
+
+      .video-container {
+        flex: 1;
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-md);
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      /* --- Sections --- */
+      .section-title {
+        font-size: 2.25rem;
+        font-weight: 700;
         text-align: center;
-        padding: 50px;
+        margin-bottom: 3rem;
+        color: var(--primary-color);
+      }
+
+      .section-title p {
+        font-size: 1.25rem;
+        font-weight: 400;
+        margin-top: 0.5rem;
+        color: #475569;
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        color: var(--primary-color);
+      }
+
+      .card h3 p {
+        font-size: 1rem;
+        font-weight: 400;
+        margin-top: 0.25rem;
+        color: #475569;
+      }
+
+      .card p {
+        color: #475569;
+        margin-bottom: 0;
+      }
+
+      .card p span {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .architecture-diagram {
+        width: 100%;
+        height: auto;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 3rem;
+      }
+
+      @media (min-width: 768px) {
+        .hero-section {
+          flex-direction: row;
+        }
+        .card-grid.architecture {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .card-grid.applications {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .card-grid.architecture {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .card-grid.applications {
+          grid-template-columns: repeat(3, 1fr);
+        }
       }
     </style>
   </head>
   <body>
-    <h1>Project Name</h1>
-    <p>Demo and write-up coming soon.</p>
-    <p>Check back after the interview for full details.</p>
+    <nav class="navbar">
+      <a href="#" class="navbar-brand"
+        >Rebar Counting App<br /><span>鉄筋計数アプリ</span></a
+      >
+      <div class="navbar-links">
+        <a href="more-projects.html"
+          >More Projects<br /><span>他のプロジェクト</span></a
+        >
+        <a
+          href="https://github.com/your-username"
+          target="_blank"
+          aria-label="GitHub Profile"
+        >
+          <i class="fab fa-github github-icon"></i>
+        </a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1>
+            Precision Rebar Counting with AI<br /><span
+              >AIによる高精度鉄筋計数</span
+            >
+          </h1>
+          <p>
+            An advanced application for automated rebar counting, leveraging
+            <b>YOLOv12</b> for accurate object detection and a robust
+            <b>FastAPI</b> backend for efficient processing. This tool
+            streamlines construction site inventory, quality control, and
+            project management with real-time insights.
+            <br />
+            <span
+              ><b>YOLOv12</b
+              >による高精度な物体検出と堅牢な<b>FastAPI</b>バックエンドを活用した、自動鉄筋計数のための高度なアプリケーションです。このツールは、リアルタイムの洞察により、建設現場の在庫管理、品質管理、プロジェクト管理を効率化します。</span
+            >
+          </p>
+
+          <div class="hashtag-container">
+            <a href="#" class="hashtag-tab">#YOLOv12<span></span></a>
+            <a href="#" class="hashtag-tab">#FastAPI<span></span></a>
+            <a href="#" class="hashtag-tab">#ComputerVision<span></span></a>
+            <a href="#" class="hashtag-tab">#AI<span></span></a>
+            <a href="#" class="hashtag-tab">#ConstructionTech<span></span></a>
+          </div>
+        </div>
+        <div class="video-container">
+          <iframe
+            src="https://www.youtube.com/embed/FZLFPy6GzC8?autoplay=1&cc_lang_pref=ja&cc_load_policy=1"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+
+      <section class="architecture-section">
+        <h2 class="section-title">
+          System Architecture<br /><span>システムアーキテクチャ</span>
+        </h2>
+        <img
+          src="http://googleusercontent.com/via.placeholder.com/1200x600?text=Placeholder+for+Architecture+Diagram"
+          alt="Visual representation of the project architecture"
+          class="architecture-diagram"
+        />
+        <div class="card-grid architecture">
+          <div class="card">
+            <h3>Image/Video Input<br /><span>画像・動画入力</span></h3>
+            <p>
+              Handles the ingestion of images or video streams from cameras,
+              drones, or mobile devices. This raw visual data is the primary
+              input for the rebar detection process.
+              <span
+                >カメラ、ドローン、またはモバイルデバイスからの画像やビデオストリームの取り込みを処理します。この生の視覚データは、鉄筋検出プロセスの主要な入力となります。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>YOLOv12 Object Detection<br /><span>YOLOv12物体検出</span></h3>
+            <p>
+              The core AI model responsible for identifying and localizing
+              individual rebar instances within the input visuals. It accurately
+              detects rebar even in complex and cluttered environments.
+              <span
+                >入力されたビジュアル内の個々の鉄筋インスタンスを識別し、特定する役割を担う中核的なAIモデルです。複雑で散らかった環境でも鉄筋を正確に検出します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              FastAPI Backend & API<br /><span>FastAPIバックエンドとAPI</span>
+            </h3>
+            <p>
+              A high-performance backend built with <b>FastAPI</b> that
+              processes the detected rebar data, performs counting, and exposes
+              an API for integration with other construction management systems.
+              <span
+                ><b>FastAPI</b
+                >で構築された高性能バックエンドで、検出された鉄筋データを処理し、計数を行い、他の建設管理システムとの統合のためのAPIを公開します。</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="applications-section">
+        <h2 class="section-title">
+          Real-World Applications<br /><span>現実世界での応用例</span>
+        </h2>
+        <div class="card-grid applications">
+          <div class="card">
+            <h3>
+              Automated Rebar Inventory<br /><span>鉄筋在庫の自動化</span>
+            </h3>
+            <p>
+              Automatically count rebar bundles and individual bars on-site or
+              in storage yards, providing real-time inventory updates and
+              reducing manual labor.
+              <span
+                >現場または保管場所にある鉄筋の束や個々の鉄筋を自動的に計数し、リアルタイムの在庫更新を提供し、手作業を削減します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Construction Site Monitoring<br /><span>建設現場の監視</span>
+            </h3>
+            <p>
+              Monitor rebar placement and quantities during construction phases
+              to ensure adherence to blueprints and project specifications.
+              <span
+                >建設段階での鉄筋の配置と数量を監視し、設計図とプロジェクト仕様への準拠を確実にします。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Quality Control & Compliance<br /><span
+                >品質管理とコンプライアンス</span
+              >
+            </h3>
+            <p>
+              Verify the correct number and type of rebar are used in structural
+              elements, ensuring quality and compliance with building codes.
+              <span
+                >構造要素に使用されている鉄筋の数と種類が正しいことを確認し、品質と建築基準への準拠を保証します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Project Progress Tracking<br /><span>プロジェクト進捗追跡</span>
+            </h3>
+            <p>
+              Track the installation progress of rebar across different sections
+              of a project, providing accurate data for scheduling and progress
+              reports.
+              <span
+                >プロジェクトの異なるセクションでの鉄筋の設置進捗を追跡し、スケジューリングと進捗報告のための正確なデータを提供します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Safety & Risk Assessment<br /><span>安全性とリスク評価</span>
+            </h3>
+            <p>
+              Identify potential safety hazards related to rebar placement or
+              storage by analyzing quantities and arrangements in real-time.
+              <span
+                >鉄筋の配置や保管に関連する潜在的な安全上の危険を、リアルタイムで数量と配置を分析することで特定します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Data Analytics & Reporting<br /><span
+                >データ分析とレポート作成</span
+              >
+            </h3>
+            <p>
+              Generate detailed reports and analytics on rebar consumption,
+              waste, and efficiency, aiding in better resource planning and cost
+              management.
+              <span
+                >鉄筋の消費量、廃棄物、効率に関する詳細なレポートと分析を生成し、より良い資源計画とコスト管理を支援します。</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
   </body>
 </html>

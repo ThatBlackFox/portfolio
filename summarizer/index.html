@@ -2,18 +2,460 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Project Name</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Help Desk Assistant</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
+      :root {
+        --bg-color: #f8fafc;
+        --text-color: #1e293b;
+        --primary-color: #1e40af;
+        --accent-color: #3b82f6;
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        padding: 2rem;
+        box-sizing: border-box;
+      }
+
+      /* --- Navigation Bar --- */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        padding: 1.5rem 2rem;
+        background-color: var(--card-bg);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+      }
+
+      .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .navbar-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .navbar-links a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease-in-out;
+      }
+
+      .navbar-links a:hover {
+        color: var(--primary-color);
+      }
+
+      .navbar-links .github-icon {
+        font-size: 1.5rem;
+        color: var(--text-color);
+      }
+
+      /* --- Hero Section --- */
+      .hero-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .hero-content {
+        flex: 1;
+        padding-right: 2rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+        line-height: 1.1;
+      }
+
+      .hero-content p {
+        font-size: 1.125rem;
+        color: #475569;
+      }
+
+      .hashtag-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+
+      .hashtag-tab {
+        background-color: var(--border-color);
+        color: var(--text-color);
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
+
+      .hashtag-tab:hover {
+        background-color: var(--primary-color);
+        color: var(--card-bg);
+      }
+
+      .video-container {
+        flex: 1;
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-md);
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      /* --- Sections --- */
+      .section-title {
+        font-size: 2.25rem;
+        font-weight: 700;
         text-align: center;
-        padding: 50px;
+        margin-bottom: 3rem;
+        color: var(--primary-color);
+      }
+
+      .section-title p {
+        font-size: 1.25rem;
+        font-weight: 400;
+        margin-top: 0.5rem;
+        color: #475569;
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        color: var(--primary-color);
+      }
+
+      .card h3 p {
+        font-size: 1rem;
+        font-weight: 400;
+        margin-top: 0.25rem;
+        color: #475569;
+      }
+
+      .card p {
+        color: #475569;
+        margin-bottom: 0;
+      }
+
+      .card p span {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .architecture-diagram {
+        width: 100%;
+        height: auto;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 3rem;
+      }
+
+      @media (min-width: 768px) {
+        .hero-section {
+          flex-direction: row;
+        }
+        .card-grid.architecture {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .card-grid.applications {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .card-grid.architecture {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .card-grid.applications {
+          grid-template-columns: repeat(3, 1fr);
+        }
       }
     </style>
   </head>
   <body>
-    <h1>Project Name</h1>
-    <p>Demo and write-up coming soon.</p>
-    <p>Check back after the interview for full details.</p>
+    <nav class="navbar">
+      <a href="#" class="navbar-brand"
+        >AI Help Desk Assistant<br /><span>AIヘルプデスクアシスタント</span></a
+      >
+      <div class="navbar-links">
+        <a href="more-projects.html"
+          >More Projects<br /><span>他のプロジェクト</span></a
+        >
+        <a
+          href="https://github.com/your-username"
+          target="_blank"
+          aria-label="GitHub Profile"
+        >
+          <i class="fab fa-github github-icon"></i>
+        </a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1>
+            The Future of AI-Powered Customer Support<br /><span
+              >AIを活用した顧客サポートの未来</span
+            >
+          </h1>
+          <p>
+            An innovative platform that uses a
+            <strong>Large Language Model (LLM)</strong> combined with a
+            <strong>Retrieval-Augmented Generation (RAG)</strong> system to
+            instantly summarize internal company policies, technical documents,
+            and historical support tickets. This allows customer service agents
+            to provide faster, more accurate support and reduces training
+            overhead for new team members.
+            <br />
+            <span
+              >社内の方針、技術文書、過去のサポートチケットなどを即座に要約する、<strong>大規模言語モデル（LLM）</strong>と<strong>検索拡張生成（RAG）</strong>を組み合わせた革新的なプラットフォームです。これにより、顧客対応担当者はより迅速かつ正確なサポートを提供でき、新入社員の研修コストも削減できます。</span
+            >
+          </p>
+
+          <div class="hashtag-container">
+            <a href="#" class="hashtag-tab">#Ollama<span></span></a>
+            <a href="#" class="hashtag-tab">#GenAI<span></span></a>
+            <a href="#" class="hashtag-tab">#RAG<span></span></a>
+            <a href="#" class="hashtag-tab">#LangChain<span></span></a>
+            <a href="#" class="hashtag-tab">#FastAPI<span></span></a>
+          </div>
+        </div>
+        <div class="video-container">
+          <iframe
+            src="https://www.youtube.com/embed/ZgFmB5nKywA?autoplay=1&cc_lang_pref=ja&cc_load_policy=1"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+
+      <section class="architecture-section">
+        <h2 class="section-title">
+          Architecture Overview<br /><span>アーキテクチャの概要</span>
+        </h2>
+        <img
+          src="http://googleusercontent.com/via.placeholder.com/1200x600?text=Placeholder+for+Architecture+Diagram"
+          alt="Visual representation of the project architecture"
+          class="architecture-diagram"
+        />
+        <div class="card-grid architecture">
+          <div class="card">
+            <h3>
+              Data Ingestion & Embedding<br /><span
+                >データ取り込みと埋め込み</span
+              >
+            </h3>
+            <p>
+              Automatically ingests company documents, policies, and support
+              tickets, converting them into vector embeddings and storing them
+              in a dedicated vector database for efficient retrieval.
+              <span
+                >会社の文書、方針、サポートチケットを自動的に取り込み、ベクトル埋め込みに変換して専用のベクトルデータベースに保存し、効率的な検索を可能にします。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Retrieval-Augmented Generation (RAG)<br /><span
+                >検索拡張生成（RAG）</span
+              >
+            </h3>
+            <p>
+              The core engine that processes user queries. It retrieves relevant
+              document snippets from the vector database and uses them to ground
+              the LLM's response, ensuring factual and up-to-date answers.
+              <span
+                >ユーザーの問い合わせを処理する中核エンジンです。ベクトルデータベースから関連する文書の断片を取得し、それを用いてLLMの回答を補強することで、正確で最新の回答を保証します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              User Interface & API Layer<br /><span
+                >ユーザーインターフェースとAPIレイヤー</span
+              >
+            </h3>
+            <p>
+              A clean, intuitive interface for agents to ask questions and a
+              robust API for seamless integration with existing customer
+              relationship management (CRM) platforms.
+              <span
+                >エージェントが質問できる直感的でクリーンなインターフェースと、既存の顧客管理（CRM）プラットフォームとのシームレスな統合を可能にする堅牢なAPIです。</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="applications-section">
+        <h2 class="section-title">
+          Potential Applications<br /><span>考えられる応用例</span>
+        </h2>
+        <div class="card-grid applications">
+          <div class="card">
+            <h3>
+              Automated Ticket Summarization<br /><span
+                >チケットの自動要約</span
+              >
+            </h3>
+            <p>
+              Instantly summarizes long support ticket threads, giving agents a
+              quick overview of the customer's issue and history without reading
+              through every message.
+              <span
+                >長いサポートチケットのやり取りを即座に要約し、担当者がすべてのメッセージを読まずに顧客の問題と履歴を素早く把握できるようにします。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Instant Policy & Document Lookups<br /><span
+                >方針・文書の即時検索</span
+              >
+            </h3>
+            <p>
+              Agents can ask a natural language question about a policy or
+              document and get a concise, accurate answer from the system,
+              saving time and reducing errors.
+              <span
+                >担当者は方針や文書について自然言語で質問することができ、システムから簡潔で正確な回答を得ることで、時間を節約しミスを減らします。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Agent-Assist & Real-time Suggestions<br /><span
+                >エージェント支援とリアルタイム提案</span
+              >
+            </h3>
+            <p>
+              Provides real-time suggestions to agents based on the customer's
+              query, pulling relevant information from the knowledge base to
+              help them solve problems faster.
+              <span
+                >顧客の問い合わせに基づき、関連する情報をナレッジベースから引き出して担当者にリアルタイムで提案し、問題をより迅速に解決できるよう支援します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Internal Knowledge Sharing<br /><span>社内ナレッジ共有</span>
+            </h3>
+            <p>
+              Allows employees from different departments to access and
+              understand information outside their immediate scope, fostering a
+              more informed and collaborative workplace.
+              <span
+                >異なる部署の従業員が、自身の専門外の情報にもアクセスして理解できるようにし、より情報共有が進んだ協力的な職場環境を育成します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Training & Onboarding<br /><span>研修とオンボーディング</span>
+            </h3>
+            <p>
+              Serves as an interactive knowledge base for new employees,
+              allowing them to learn company policies and procedures by asking
+              questions directly.
+              <span
+                >新入社員が直接質問することで会社のポリシーや手順を学べる、インタラクティブなナレッジベースとして機能します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Chatbot for Self-Service<br /><span
+                >セルフサービス用チャットボット</span
+              >
+            </h3>
+            <p>
+              The RAG system can power a front-facing chatbot that answers
+              common customer questions, reducing the number of support tickets
+              and freeing up agents for more complex issues.
+              <span
+                >RAGシステムは、よくある顧客の質問に答えるフロントエンドのチャットボットを動かすことができ、サポートチケット数を減らし、担当者がより複雑な問題に専念できるようにします。</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
   </body>
 </html>

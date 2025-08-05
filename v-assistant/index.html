@@ -2,18 +2,459 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Project Name</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual Assistant</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
+      :root {
+        --bg-color: #f8fafc;
+        --text-color: #1e293b;
+        --primary-color: #1e40af;
+        --accent-color: #3b82f6;
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        padding: 2rem;
+        box-sizing: border-box;
+      }
+
+      /* --- Navigation Bar --- */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        padding: 1.5rem 2rem;
+        background-color: var(--card-bg);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+      }
+
+      .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .navbar-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .navbar-links a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease-in-out;
+      }
+
+      .navbar-links a:hover {
+        color: var(--primary-color);
+      }
+
+      .navbar-links .github-icon {
+        font-size: 1.5rem;
+        color: var(--text-color);
+      }
+
+      /* --- Hero Section --- */
+      .hero-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .hero-content {
+        flex: 1;
+        padding-right: 2rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+        line-height: 1.1;
+      }
+
+      .hero-content p {
+        font-size: 1.125rem;
+        color: #475569;
+      }
+
+      .hashtag-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+
+      .hashtag-tab {
+        background-color: var(--border-color);
+        color: var(--text-color);
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
+
+      .hashtag-tab:hover {
+        background-color: var(--primary-color);
+        color: var(--card-bg);
+      }
+
+      .video-container {
+        flex: 1;
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-md);
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      /* --- Sections --- */
+      .section-title {
+        font-size: 2.25rem;
+        font-weight: 700;
         text-align: center;
-        padding: 50px;
+        margin-bottom: 3rem;
+        color: var(--primary-color);
+      }
+
+      .section-title p {
+        font-size: 1.25rem;
+        font-weight: 400;
+        margin-top: 0.5rem;
+        color: #475569;
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        color: var(--primary-color);
+      }
+
+      .card h3 p {
+        font-size: 1rem;
+        font-weight: 400;
+        margin-top: 0.25rem;
+        color: #475569;
+      }
+
+      .card p {
+        color: #475569;
+        margin-bottom: 0;
+      }
+
+      .card p span {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .architecture-diagram {
+        width: 100%;
+        height: auto;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 3rem;
+      }
+
+      @media (min-width: 768px) {
+        .hero-section {
+          flex-direction: row;
+        }
+        .card-grid.architecture {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .card-grid.applications {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .card-grid.architecture {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .card-grid.applications {
+          grid-template-columns: repeat(3, 1fr);
+        }
       }
     </style>
   </head>
   <body>
-    <h1>Project Name</h1>
-    <p>Demo and write-up coming soon.</p>
-    <p>Check back after the interview for full details.</p>
+    <nav class="navbar">
+      <a href="#" class="navbar-brand"
+        >Virtual Assistant<br /><span>バーチャルアシスタント</span></a
+      >
+      <div class="navbar-links">
+        <a href="more-projects.html"
+          >More Projects<br /><span>他のプロジェクト</span></a
+        >
+        <a
+          href="https://github.com/ThatBlackFox"
+          target="_blank"
+          aria-label="GitHub Profile"
+        >
+          <i class="fab fa-github github-icon"></i>
+        </a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1>
+            The Future of Interactive Digital Experiences<br /><span
+              >インタラクティブなデジタル体験の未来</span
+            >
+          </h1>
+          <p>
+            An innovative, <b>AI-powered virtual assistant</b> that combines
+            voice generation with the <b>Gemini</b> model and <b>3.js</b> for
+            real-time immersive interactions. This platform is designed to
+            engage users with personalized, responsive, and bilingual (English
+            and Japanese) virtual assistants.
+            <br />
+            <span
+              >音声生成と<b>Gemini</b>モデル、<b>3.js</b>を組み合わせた革新的な<b>AI搭載バーチャルアシスタント</b>です。このプラットフォームは、パーソナライズされた、応答性が高く、バイリンガル（英語と日本語）の仮想アシスタントでユーザーを魅了するように設計されています。</span
+            >
+          </p>
+
+          <div class="hashtag-container">
+            <a href="#" class="hashtag-tab">#GenAI<span></span></a>
+            <a href="#" class="hashtag-tab">#Gemini<span></span></a>
+            <a href="#" class="hashtag-tab">#FastAPI<span></span></a>
+            <a href="#" class="hashtag-tab">#3.js<span></span></a>
+            <a href="#" class="hashtag-tab">#WebXR<span></span></a>
+          </div>
+        </div>
+        <div class="video-container">
+          <iframe
+            src="https://www.youtube.com/embed/EDBNG-pPwF4?autoplay=1&cc_lang_pref=ja&cc_load_policy=1"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+
+      <section class="architecture-section">
+        <h2 class="section-title">
+          System Architecture<br /><span>システムアーキテクチャ</span>
+        </h2>
+        <img
+          src="http://googleusercontent.com/via.placeholder.com/1200x600?text=Placeholder+for+Architecture+Diagram"
+          alt="Visual representation of the project architecture"
+          class="architecture-diagram"
+        />
+        <div class="card-grid architecture">
+          <div class="card">
+            <h3>Gemini & AI Core<br /><span>GeminiとAIコア</span></h3>
+            <p>
+              The central intelligence of the assistant, powered by the
+              <b>Gemini large language model</b>. This core handles complex
+              queries, generates responses, and ensures smooth, natural
+              conversations in multiple languages.
+              <span
+                ><b>Gemini大規模言語モデル</b
+                >を搭載した、アシスタントの中核となるインテリジェンスです。このコアは、複雑な質問に対応し、応答を生成し、複数の言語でスムーズで自然な会話を保証します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Voice & Text-to-Speech<br /><span>音声とテキスト読み上げ</span>
+            </h3>
+            <p>
+              An integrated voice generation system that translates AI-generated
+              text into lifelike speech. It provides a more immersive and
+              accessible experience for users interacting with the virtual
+              assistant.
+              <span
+                >AIが生成したテキストを本物そっくりの音声に変換する統合された音声生成システム。これにより、バーチャルアシスタントと対話するユーザーに、より没入感のあるアクセスしやすい体験を提供します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              3D & UI Rendering (3.js)<br /><span
+                >3DとUIのレンダリング (3.js)</span
+              >
+            </h3>
+            <p>
+              The visual framework built on <b>3.js</b> for creating the
+              immersive virtual environment and interactive user interface. It
+              renders the virtual assistant and the surrounding world in real
+              time.
+              <span
+                >没入型バーチャル環境とインタラクティブなユーザーインターフェースを作成するための、<b>3.js</b>を基盤としたビジュアルフレームワークです。仮想アシスタントと周囲の世界をリアルタイムでレンダリングします。</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="applications-section">
+        <h2 class="section-title">
+          Real-World Applications<br /><span>現実世界での応用例</span>
+        </h2>
+        <div class="card-grid applications">
+          <div class="card">
+            <h3>Customer-Facing Kiosks<br /><span>顧客対応キオスク</span></h3>
+            <p>
+              Deploy the virtual assistant in public spaces like malls or
+              airports. It can answer questions about store locations, flight
+              information, or product details, reducing the need for human
+              staff.
+              <span
+                >ショッピングモールや空港などの公共スペースにバーチャルアシスタントを導入。店舗の場所、フライト情報、製品詳細に関する質問に答え、人的スタッフの必要性を減らします。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              PR & Marketing Campaigns<br /><span
+                >PRとマーケティングキャンペーン</span
+              >
+            </h3>
+            <p>
+              Create engaging, interactive experiences for product launches or
+              brand promotions. The virtual assistant can guide users through a
+              virtual tour or provide personalized product information.
+              <span
+                >製品発表やブランドプロモーションのために、魅力的でインタラクティブな体験を創出。バーチャルアシスタントは、ユーザーを仮想ツアーに案内したり、パーソナライズされた製品情報を提供したりできます。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Virtual Guides & Tour Guides<br /><span
+                >バーチャルガイドとツアーガイド</span
+              >
+            </h3>
+            <p>
+              Provide virtual tours of museums, campuses, or real estate
+              properties. The bilingual assistant can cater to a global
+              audience, offering rich, informative experiences for all visitors.
+              <span
+                >美術館、キャンパス、不動産のバーチャルツアーを提供。バイリンガルアシスタントは、世界中の視聴者に対応し、すべての訪問者に豊かで有益な体験を提供します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Interactive Product Demos<br /><span
+                >インタラクティブな製品デモ</span
+              >
+            </h3>
+            <p>
+              Allow potential customers to interact with a virtual product in a
+              controlled environment. The assistant can highlight features,
+              answer questions, and guide the user through the product's
+              functionality.
+              <span
+                >潜在顧客が管理された環境で仮想製品と対話できるようにします。アシスタントは機能を強調し、質問に答え、製品の機能をユーザーに案内します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Educational & Training Modules<br /><span
+                >教育と研修モジュール</span
+              >
+            </h3>
+            <p>
+              Develop immersive training simulations for new employees or
+              students. The virtual assistant can act as a tutor, providing
+              guided instructions and real-time feedback in a virtual setting.
+              <span
+                >新入社員や学生向けの没入型トレーニングシミュレーションを開発。バーチャルアシスタントは、仮想設定で指導やリアルタイムのフィードバックを提供するチューターとして機能します。</span
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              Multilingual Event Support<br /><span
+                >多言語イベントサポート</span
+              >
+            </h3>
+            <p>
+              Enhance conferences and events by providing on-demand,
+              multilingual assistance. The virtual assistant can answer common
+              questions, provide directions, or offer information about speakers
+              and sessions to attendees from all over the world.
+              <span
+                >会議やイベントで、オンデマンドの多言語アシスタンスを提供することで体験を向上させます。バーチャルアシスタントは、一般的な質問に答え、道案内をしたり、世界中の参加者に講演者やセッションに関する情報を提供したりできます。</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
   </body>
 </html>
